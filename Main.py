@@ -2,19 +2,19 @@ from sklearn import tree
 from sklearn import naive_bayes
 from sklearn import svm
 from sklearn import neighbors
-from sklearn import metrics
+from sklearn.metrics import accuracy_score
 import numpy as np
 
-clf = tree.DecisionTreeClassifier()
+clf_tree = tree.DecisionTreeClassifier()
 
 # CHALLENGE - create 3 more classifiers...
 # 1 Gaussian Naive Bayes Classifier
 # 2 Support Vector Machines Classifier
 # 3 K Neighbours Classifier
 
-clf1 = naive_bayes.GaussianNB()
-clf2 = svm.SVC(gamma='scale')
-clf3 = neighbors.KNeighborsClassifier()
+clf_nb = naive_bayes.GaussianNB()
+clf_svm = svm.SVC(gamma='scale')
+clf_Kneighbor = neighbors.KNeighborsClassifier()
 
 # [height, weight, shoe_size]
 X = [[181, 80, 44], [177, 70, 43], [160, 60, 38], [154, 54, 37], [166, 65, 40],
@@ -24,66 +24,43 @@ X = [[181, 80, 44], [177, 70, 43], [160, 60, 38], [154, 54, 37], [166, 65, 40],
 Y = ['male', 'male', 'female', 'female', 'male', 'male', 'female', 'female',
      'female', 'male', 'male']
 
-
 # CHALLENGE - ...and train them on our data
-clf = clf.fit(X, Y)
-clf1 = clf1.fit(X, Y)
-clf2 = clf2.fit(X, Y)
-clf3 = clf3.fit(X, Y)
+clf_tree = clf_tree.fit(X, Y)
+clf_nb = clf_nb.fit(X, Y)
+clf_svm = clf_svm.fit(X, Y)
+clf_Kneighbor = clf_Kneighbor.fit(X, Y)
 
-prediction = clf.predict([[190, 70, 43]])
-prediction1 = clf1.predict([[190, 70, 43]])
-prediction2 = clf2.predict([[190, 70, 43]])
-prediction3 = clf3.predict([[190, 70, 43]])
+pred_tree = clf_tree.predict([[190, 70, 43]])
+pred_nb = clf_nb.predict([[190, 70, 43]])
+pred_svm = clf_svm.predict([[190, 70, 43]])
+pred_Kneighbor = clf_Kneighbor.predict([[190, 70, 43]])
+
+print("Decision Tree Classifier's result is {} ".format(pred_tree))
+print("Gaussian Naive Bayes Classifier's result is {} ".format(pred_nb))
+print("Support Vector Machines Classifier's result is {} ".format(pred_svm))
+print("K Neighbours Classifier's result is {} ".format(pred_Kneighbor))
+print()
 
 # CHALLENGE compare their results and print the best one!
 
-print(prediction)
-print(prediction1)
-print(prediction2)
-print(prediction3)
+pred_tree = clf_tree.predict(X)
+acc_tree = accuracy_score(Y, pred_tree) * 100
+print("Decision Tree Classifier's accuracy is {} ".format(acc_tree))
 
-y_pred = [None]*100000
-y_true = [None]*100000
-for i in range(0, 100000):
-    y_pred[i] = clf.predict([[190, 70, 43]])
-    y_true[i] = 'male'
+pred_nb = clf_nb.predict(X)
+acc_nb = accuracy_score(Y, pred_nb) * 100
+print("Gaussian Naive Bayes Classifier's accuracy is {} ".format(acc_nb))
 
+pred_svm = clf_svm.predict(X)
+acc_svm = accuracy_score(Y, pred_svm) * 100
+print("Support Vector Machines Classifier's accuracy is {} ".format(acc_svm))
 
-accuracy = metrics.accuracy_score(y_true, y_pred)
+pred_Kneighbor = clf_Kneighbor.predict(X)
+acc_Kneighbor = accuracy_score(Y, pred_Kneighbor) * 100
+print("K Neighbours Classifier's accuracy is {} ".format(acc_Kneighbor))
 
-print("Accuracy of Decision Tree Classifier: ", accuracy)
+print()
 
-y_pred1 = [None]*100000
-y_true1 = [None]*100000
-for i in range(0, 100000):
-    y_pred1[i] = clf1.predict([[190, 70, 43]])
-    y_true1[i] = 'male'
-
-
-accuracy1 = metrics.accuracy_score(y_true1, y_pred1)
-
-print("Accuracy of Gaussian Naive Bayes Classifier: ", accuracy1)
-
-y_pred2 = [None]*100000
-y_true2 = [None]*100000
-for i in range(0, 100000):
-    y_pred2[i] = clf2.predict([[190, 70, 43]])
-    y_true2[i] = 'male'
-
-
-accuracy2 = metrics.accuracy_score(y_true2, y_pred2)
-
-print("Accuracy of Support Vector Machines Classifier: ", accuracy2)
-
-y_pred3 = [None]*100000
-y_true3 = [None]*100000
-for i in range(0, 100000):
-    y_pred3[i] = clf3.predict([[190, 70, 43]])
-    y_true3[i] = 'male'
-
-
-accuracy3 = metrics.accuracy_score(y_true3, y_pred3)
-
-print("Accuracy of K Neighbours Classifier: ", accuracy3)
-
+index = np.argmax([acc_tree, acc_nb, acc_svm, acc_Kneighbor])
+classifiers = {0: 'Decision Tree Classifier', 1: 'Gaussian Naive Bayes Classifier', 2: 'Support Vector Machines Classifier', 3: 'K Neighbours Classifier'}
+print('Best gender classifier is {}'.format(classifiers[index]))
